@@ -1,3 +1,5 @@
+![Big top logo](logo/readme_top.png)
+
 # Tiger
 Tiger (formerly ReTag3) is an open-source crossplatform powerful software for editing ID3 tags and group renaming.  
 It's a free replacement for [Tag&Rename](https://www.softpointer.com/tr.htm).
