@@ -18,7 +18,7 @@ import wx.dataview
 class frameMain ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Tiger (ReTag3) by DarkCat09", pos = wx.DefaultPosition, size = wx.Size( 783,421 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Tiger (ReTag3) by DarkCat09", pos = wx.DefaultPosition, size = wx.Size( 770,465 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -348,10 +348,10 @@ class frameMain ( wx.Frame ):
 		dirsSizer.Fit( self.dirsPanel )
 		self.dirsBook.AddPage( self.dirsPanel, u"a page", False )
 
-		bottomSizer.Add( self.dirsBook, 1, wx.EXPAND, 5 )
+		bottomSizer.Add( self.dirsBook, 2, wx.EXPAND, 5 )
 
 
-		mainSizer.Add( bottomSizer, 1, wx.EXPAND, 5 )
+		mainSizer.Add( bottomSizer, 2, wx.EXPAND, 5 )
 
 
 		self.SetSizer( mainSizer )

@@ -12,8 +12,13 @@ import webbrowser
 # Implementing frameMain
 class TigerframeMain(tiger.frameMain):
 	def __init__(self, parent):
+
+		# Is GUI initialized
+		# Private field
+		self.__gui_inited = False
+
 		tiger.frameMain.__init__(self, parent)
-		self.dirsGenericList1.SetDefaultFolder(os.path.expanduser('~'))
+		self.dirsGenericList1.SetPath(os.path.expanduser('~'))
 		self.dirsMusicList.AppendColumn('Filename')
 		self.dirsMusicList.AppendColumn('Title')
 		self.dirsMusicList.AppendColumn('Album')
@@ -21,6 +26,8 @@ class TigerframeMain(tiger.frameMain):
 		self.dirsMusicList.AppendColumn('Year')
 		self.dirsMusicList.AppendColumn('Genre')
 		self.dirsMusicList.AppendColumn('Track')
+
+		self.__gui_inited = True
 
 	# Handlers for frameMain events
 	def OnExit(self, event):
@@ -53,30 +60,31 @@ class TigerframeMain(tiger.frameMain):
 		wx.InfoMessageBox(self)
 
 	def OnDirectorySelected(self, event):
-		if (isinstance(event, wx.TreeEvent)):
-			directory = self.dirsGenericList1.GetPath()
-		else:
-			directory = event.GetPath()
-		#wx.MessageDialog(self, 'Path:' + directory, 'Tiger - Debug', wx.OK).ShowModal()
-		updateThread = threading.Thread(target=self.UpdateMusicList, args=(directory,), daemon=True)
-		updateThread.start()
-		print('started!')
+		if (self.__gui_inited):
+			if (isinstance(event, wx.TreeEvent)):
+				directory = self.dirsGenericList1.GetPath()
+			else:
+				directory = event.GetPath()
+			#wx.MessageDialog(self, 'Path:' + directory, 'Tiger - Debug', wx.OK).ShowModal()
+			updateThread = threading.Thread(target=self.UpdateMusicList, args=(directory,), daemon=True)
+			updateThread.start()
+			print('started!')
 
 	def UpdateMusicList(self, directory):
 		addedDirs = {}
-		splitPath = re.compile(r'/\\')
+		splitPath = re.compile(r'\/\\')
 		self.dirsMusicList.DeleteAllItems()
 		for root, dirs, files in os.walk(directory):
 			for file in files:
 				if (file[file.rfind('.'):] == '.mp3'):
-					filedirs = splitPath.split(root) + [file]
-					print(root)
-					print(file)
-					for item in range(len(filedirs) - 1):
+					filepath = splitPath.split(root)
+					filedirs = [filepath[len(filepath) - 1], file]
+					for item in range(len(filedirs)):
 						for dirname in addedDirs:
 							if (filedirs[item] == dirname):
 								break
 						else:
+							print(item, filedirs[item], 'add')
 							rootdir = self.dirsMusicList.GetRootItem()
 							if (item > 0):
 								rootdir = addedDirs[filedirs[item - 1]]
